@@ -97,6 +97,8 @@ while repeat:
                                 ## LED and remove the TODO comment block when 
                                 ## complete
                                 ##
+
+                                GPIO.output(18, False)
         
                         case "on":
                                 # Set GPIO line 18 to True - enable output voltage
@@ -109,6 +111,8 @@ while repeat:
                                 ## complete
                                 ##
 
+                                GPIO.output(18, True)
+
                         case "exit" | "quit":
                                 # Cleanup the GPIO pins used in this application and 
                                 # exit cleanly
@@ -119,7 +123,10 @@ while repeat:
                                 ## Lines, one to end the loop - DO NOT USE A BREAK 
                                 ## STATEMENT - and remove the TODO comment block when 
                                 ## complete
-                                ##         
+                                ##
+                                GPIO.output(18, False)
+                                GPIO.cleanup()
+                                repeat = False
                                                
                         case _:
                                 # No valid commands in the input so do nothing
