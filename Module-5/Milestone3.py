@@ -250,6 +250,9 @@ class CWMachine(StateMachine):
         ## LED for 500ms one time. Remove this TODO comment block when
         ## complete.
 
+        ## Blink Red LED once for 500ms
+        self.redLight.blink(on_time=0.5, off_time=0.01, n=1)
+    
         if(DEBUG):
             print("* Changing state to red - dot")
 
@@ -264,6 +267,7 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to ensure that the
         ## Red LED is turned off. Remove this TODO comment block when
         ## complete.
+        self.redLight.off()
 
     ##
     ## on_enter_dash - Action performed when the state machine transitions
@@ -276,6 +280,8 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to blink the Blue
         ## LED for 1500ms one time. Remove this TODO comment block when
         ## complete.
+
+        self.blueLight.blink(on_time=1.5, off_time=0.01, n=1)
 
         if(DEBUG):
             print("* Changing state to blue - dash")
@@ -291,6 +297,7 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to ensure that the
         ## Blue LED is turned off. Remove this TODO comment block when
         ## complete.
+        self.blueLight.off()
 
 
     ##
@@ -303,6 +310,8 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to pause execution
         ## of the next operation for 250ms. Remove this TODO comment block when
         ## complete.
+
+        sleep(0.250)
 
         if(DEBUG):
             print("* Pausing Between Dots/Dashes - 250ms")
@@ -324,6 +333,7 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to pause execution
         ## of the next operation for 750ms. Remove this TODO comment block when
         ## complete.
+        sleep(0.750)
 
         if(DEBUG):
             print("* Pausing Between Letters - 750ms")
@@ -345,6 +355,7 @@ class CWMachine(StateMachine):
         ## TODO: Add the single line of code necessary to pause execution
         ## of the next operation for 3000ms. Remove this TODO comment block 
         ## when complete.
+        sleep(3)
 
         if(DEBUG):
             print("* Pausing Between Words - 3000ms")
@@ -367,6 +378,9 @@ class CWMachine(StateMachine):
         ## OK. Remove this TODO comment block when complete. You should be
         ## able to accomplish this in fewer than 6 lines of code.
 
+        ## Switch active message
+        self.activeMessage = self.message2 if self.activeMessage == self.message1 else self.message1
+        
         if(DEBUG):
             print(f"* Toggling active message to: {self.activeMessage} ")
 
@@ -429,7 +443,16 @@ class CWMachine(StateMachine):
                         ## Remove this TODO comment block when complete. 
                         ## You should be able to accomplish this in fewer 
                         ## than 10 lines of code.
+                        if x == '.':
+                            self.doDot()
+                            self.doDot()
+                        elif x == '-':
+                            self.doDash()
+                            self.doDash()
+                        else:
+                            print("Something went wrong. Check transmit() method.")
 
+                            
                         # If we are still sending process a dotDashPause event
 
                         ## TODO: Add the code necessary code to determine if 
@@ -439,6 +462,10 @@ class CWMachine(StateMachine):
                         ## Remove this TODO comment block when complete. 
                         ## You should be able to accomplish this in fewer 
                         ## than 6 lines of code.
+                        if lenMorse > morseCounter:
+                            self.doDDP()
+                            self.doDDP()
+                            morseCounter += 1
 
                     # If we are still sending process a letterPause event
 
@@ -450,6 +477,12 @@ class CWMachine(StateMachine):
                     ## You should be able to accomplish this in fewer 
                     ## than 6 lines of code.
 
+                    if lenWord > wordCounter:
+                        self.doLP()
+                        self.doLP()
+                        wordCounter += 1
+                    
+
                 # If we are still sending process a wordPause event
 
                 ## TODO: Add the code necessary code to determine if 
@@ -459,6 +492,11 @@ class CWMachine(StateMachine):
                 ## Remove this TODO comment block when complete. 
                 ## You should be able to accomplish this in fewer 
                 ## than 6 lines of code.
+                
+                if lenWords > wordsCounter:
+                    self.doWP()
+                    self.doWP()
+                    wordsCounter += 1
 
         ## Cleanup the display i.e. clear it
         self.screen.cleanupDisplay()
@@ -480,6 +518,7 @@ cwMachine.run()
 ## execution of the processButton function in our State Machine
 ##
 greenButton = Button(24)
+greenButton.when_pressed = cwMachine.processButton
 
 ## TODO: Add the code necessary code to assign the
 ## appropriate function to the greenButton variable 
