@@ -42,6 +42,9 @@ ser = serial.Serial(
         timeout=1          # Set timeout to 1
 )
 
+# Provide feedback to let user know server is running
+print("Server up. Entering loop...")
+
 # Setup loop variable
 repeat = True
 
@@ -65,4 +68,5 @@ while repeat:
         except KeyboardInterrupt:
                 # We only reach here when the user has processed a Keyboard
                 # Interrupt by pressing CTRL-C, so Exit cleanly
+                print("Exiting cleanly.")
                 repeat = False

@@ -258,19 +258,24 @@ class TemperatureMachine(StateMachine):
     ## into the 'heat' state
     ##
     def on_enter_heat(self):
+        ##
+        ## TODO: Add the single line of code necessary to update the
+        ## lights on the thermostat. 
+        ## Remove this TODO comment block when complete.
         
         if(DEBUG):
             print("* Changing state to heat")
-        
-        ## Update LED Indicators
         self.updateLights()
     ##
     ## on_exit_heat - Action performed when the statemachine transitions
     ## out of the 'heat' state.
     ##
     def on_exit_heat(self):
-       
-        ## Update LED Indicators
+        ##
+        ## TODO: Add the single line of code necessary to change the state
+        ## of the indicator light when exiting the heat state.
+        ## Remove this TODO comment block when complete.
+        
         self.updateLights()
 
     ##
@@ -278,11 +283,13 @@ class TemperatureMachine(StateMachine):
     ## into the 'cool' state
     ##
     def on_enter_cool(self):
+        ##
+        ## TODO: Add the single line of code necessary to update the
+        ## lights on the thermostat. 
+        ## Remove this TODO comment block when complete.
         
         if(DEBUG):
             print("* Changing state to cool")
-       
-        ## Update LED Indicators
         self.updateLights()
 
     ##
@@ -290,19 +297,24 @@ class TemperatureMachine(StateMachine):
     ## out of the 'cool' state.
     ##
     def on_exit_cool(self):
-        
-        ## Update LED Indicators
+        ##
+        ## TODO: Add the single line of code necessary to change the state
+        ## of the indicator light when exiting the cool state.
+        ## Remove this TODO comment block when complete.
+
         self.updateLights()
     ##
     ## on_enter_off - Action performed when the state machine transitions
     ## into the 'off' state
     ##
     def on_enter_off(self):
+        ##
+        ## TODO: Add the two lines of code necessary to change the state
+        ## of any indicator lights when entering the off state.
+        ## Remove this TODO comment block when complete.
 
         if(DEBUG):
             print("* Changing state to off")
-        
-        ## Update LED Indicators
         self.updateLights()
     
     ##
@@ -314,8 +326,10 @@ class TemperatureMachine(StateMachine):
         if(DEBUG):
             print("Cycling Temperature State")
 
-        ## Handle the event to change the state of the system.
-        ## This is triggered when both buttons are pressed simultaneously
+        ##
+        ## TODO: Add the single line of code necessary to change
+        ## the state of the thermostat.
+        ## Remove this TODO comment block when complete.
         self.cycle()
         
     ##
@@ -328,8 +342,11 @@ class TemperatureMachine(StateMachine):
         if(DEBUG):
             print("Increasing Set Point")
 
-        ## Handle event when temp increase button is pressed
-        ## Increase temp set point and update LEDs
+        ##
+        ## TODO: Add the two lines of code necessary to update
+        ## the setPoint of the thermostat and the status lights
+        ## within the circuit.
+        ## Remove this TODO comment block when complete.
         self.setPoint += 1
         self.updateLights()
 
@@ -343,8 +360,11 @@ class TemperatureMachine(StateMachine):
         if(DEBUG):
             print("Decreasing Set Point")
 
-        ## Handle event when temp decrease button is pressed.
-        ## Decrease temp set point and update LEDs
+        ##
+        ## TODO: Add the two lines of code necessary to update
+        ## the setPoint of the thermostat and the status lights
+        ## within the circuit.
+        ## Remove this TODO comment block when complete.
         self.setPoint -= 1
         self.updateLights()
         
@@ -366,9 +386,15 @@ class TemperatureMachine(StateMachine):
 
         # Determine visual identifiers
 
-        ## Compare current temp to set temp, along with current state of system
-        ## to determine behavior of LEDs
-        
+        ##
+        ## TODO: Add the code necessary to update the status
+        ## lights in our thermostat circuit. Keep in mind the 
+        ## necessary functionality for each light depends on 
+        ## both the current state of the thermostat and the 
+        ## temperature relative to the setpoint in that state.
+        ## You should be able to accomplish this within 20 lines
+        ## of code. Remove this TODO comment block when complete.
+
         if self.current_state.id == "heat":
             if temp < self.setPoint:
                 redLight.pulse()
@@ -400,9 +426,15 @@ class TemperatureMachine(StateMachine):
     ##  Configure output string for the Thermostat Server
     ##
     def setupSerialOutput(self):
-        
-        ## Create output string and return encoded string
-
+        ##
+        ## TODO: Add the code necessary to create the string assigned to
+        ## the variable named output that will provide the single 
+        ## line of text that will be sent to the TemperatureServer
+        ## over the Serial Port (UART). Make sure that this is a 
+        ## comma delimited string indicating the current state of the
+        ## thermostat, the temperature in degrees Fahrenheit, and the
+        ## current setpoint of the thermostat - also in degrees Fahrenheit.
+        ## Remove this TODO comment block when complete.
         output = f"{self.current_state.id}, {floor(self.getFahrenheit())}, {self.setPoint}"
         return output.encode()
     
@@ -426,19 +458,29 @@ class TemperatureMachine(StateMachine):
     
             ## Setup display line 1
 
-            ## Line 1 is formatted datetime string
+            ##
+            ## TODO: Add the code necessary to setup the first line
+            ## of the LCD display to incude the current date and time.
+            ## Remove this TODO comment block when complete.
             lcd_line_1 = current_time.strftime("%b %d  %H:%M:%S\n")
             
             ## Setup Display Line 2
             if(altCounter < 6):
-                
-                ## Line 2 sometimes shows current temperature
+                ##
+                ## TODO: Add the code necessary to setup the second line
+                ## of the LCD display to incude the current temperature in
+                ## degrees Fahrenheit. 
+                ## Remove this TODO comment block when complete.
                 lcd_line_2 = f"Temp: {temp}F"
     
                 altCounter = altCounter + 1
             else:
-                
-                ## Line 2 sometimes shows current state and set point
+                ##
+                ## TODO: Add the code necessary to setup the second line
+                ## of the LCD display to incude the current state of the 
+                ## thermostat and the current temperature setpoint in 
+                ## degrees Fahrenheit. 
+                ## Remove this TODO comment block when complete.
                 lcd_line_2 = f"{self.current_state.id} | Set: {self.setPoint}F"
 
                 altCounter = altCounter + 1
@@ -455,9 +497,12 @@ class TemperatureMachine(StateMachine):
             if(DEBUG):
                print(f"Counter: {counter}")
             if((counter % 30) == 0):
-                
-                ## setupSerialOutput() return value is already encoded. 
-                ## Simply pass to ser.write()
+                ##
+                ## TODO: Add the single line of code necessary to send
+                ## our current state information to the TemperatureServer
+                ## over the Serial Port (UART). Be sure to use the 
+                ## setupSerialOuput function previously defined.
+                ## Remove this TODO comment block when complete.
                 ser.write(self.setupSerialOutput())
                 counter = 1
             else:
@@ -476,33 +521,31 @@ class TemperatureMachine(StateMachine):
 tsm = TemperatureMachine()
 tsm.run()
 
-
-
-
-##
-## Configure our green button to use GPIO 24 and to execute
-## the method to cycle the thermostat when pressed.
-##
-
-## Helper function to handle the button
-## This is used to check if both buttons are pressed.
 def increaseButtonHandler():
+    sleep(0.2)
     if decreaseButton.is_pressed:
         tsm.processTempStateButton()
     else:
         tsm.processTempIncButton()
 
+##
+## Configure our green button to use GPIO 24 and to execute
+## the method to cycle the thermostat when pressed.
+##
 increaseButton = Button(24)
 increaseButton.when_pressed = increaseButtonHandler
+##
+## TODO: Add the single line of code necessary to assign
+## a function to be triggered when the button is pushed to 
+## change the state of our thermostat.
+## Remove this TODO comment block when complete.
 
 ##
 ## Configure our Red button to use GPIO 25 and to execute
 ## the function to increase the setpoint by a degree.
 ##
-
-## Helper function to handle the button
-## This is used to check if both buttons are pressed.
 def decreaseButtonHandler():
+    sleep(0.2)
     if increaseButton.is_pressed:
         tsm.processTempStateButton()
     else:
@@ -510,6 +553,11 @@ def decreaseButtonHandler():
 
 decreaseButton = Button(25)
 decreaseButton.when_pressed = decreaseButtonHandler
+##
+## TODO: Add the single line of code necessary to assign
+## a function to be triggered when the button is pushed to 
+## increase the setpoint by one degree Fahrenheit.
+## Remove this TODO comment block when complete.
 
 
 ##
